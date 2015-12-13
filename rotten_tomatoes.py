@@ -120,9 +120,12 @@ main_page_content = '''
 
 # A single movie entry html template
 movie_tile_content = '''
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
+<div class="col-md-8 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
     <img src="{poster_image_url}" width="220" height="342">
     <h2>{movie_title}</h2>
+    <div class="rating">
+        <span>{rating_stars}</span>
+    </div>
 </div>
 '''
 
@@ -141,11 +144,23 @@ def create_movie_tiles_content(movies):
 
         # Append the tile for the movie with its content filled in
         content += movie_tile_content.format(
-            movie_title = movie.title,
-            poster_image_url= movie.poster_art,
-            trailer_youtube_id = trailer_youtube_id
+            movie_title=movie.title,
+            poster_image_url=movie.poster_art,
+            trailer_youtube_id=trailer_youtube_id,
+            rating_stars=get_rating_html(movie.rating)
         )
     return content
+
+
+def get_rating_html(rating):
+    black_star = "&#9733"
+    white_star = "&#9734"
+    rating_string = ''
+    for x in range(0, rating):
+        rating_string += black_star
+    for y in range(rating, 5):
+        rating_string += white_star
+    return rating_string
 
 
 def open_movies_page(movies):
